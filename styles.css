@@ -1,0 +1,13 @@
+table, th, tr {
+    border: 1px solid;
+    border-collapse: collapse;
+    width: 33vw;
+}
+
+th {
+    background-color: gray;
+}
+
+input{
+    width: 33vw;
+}

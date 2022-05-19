@@ -4,6 +4,7 @@ let itemNumber = 1;
 function addItem(){
 	let table = document.getElementById('table');
 	let row = table.insertRow(rows++);
+	table.style.background = 'red';
 	
 	let itemNumberCell = row.insertCell(0);
 	itemNumberCell.innerText = itemNumber;
@@ -15,33 +16,48 @@ function addItem(){
 	nameCell.append(name);
 	
 	let priorityCell = row.insertCell(2);
-	priorityCell.append(priorityFunction());
+	priorityCell.append(priorityFunction('Low', 'Medium', 'High'));
+
+	let statusCell = row.insertCell(3);
+	statusCell.append(priorityFunction('Not Started', 'In-process', 'Completed'));
 
 	itemNumber++;
-
 }
 
 function priorityFunction(){
-	let priority = document.createElement('select');
-	priority.name = 'priorityLevel';
-	priority.id = 'priorityLevel';
+	let table = document.getElementById('table');
+	let options = document.createElement('select');
+	options.name = 'priorityLevel';
+	options.id = 'priorityLevel'+(rows-1);
 
-	let op1 = document.createElement('option');
-	op1.value = 1; op1.innerText = 'Low';
-
-	let op2 = document.createElement('option');
-	op2.value = 5; op2.innerText = 'Medium';
+	let values = [0.1, 0.5, 1];
+	for(let i=0; i<arguments.length; i++){
+		let option = document.createElement('option');
+		option.value = values[i]
+		option.innerText = arguments[i];
+		options.append(option);
+	}
 	
-	let op3 = document.createElement('option');
-	op3.value = 10; op3.innerText = 'High';
+	options.addEventListener('change', function(){
+		let rowNumber = rows-1;
+			if (options.value == 0.1){
+				toggle('red', rowNumber);
+				console.log('Not Started');
+			} else if (options.value == 0.5){
+				toggle('orange', rowNumber);
+				console.log('In-Process');
+			} else {
+				toggle('green', rowNumber);
+				console.log('Completed');
+			}
+		})
 
-	priority.append(op1);
-	priority.append(op2);
-	priority.append(op3);
-
-	return priority;
+	return options;
 }
 
-function deleteItem(itemNumberToBeDeleted){
-	
+function toggle(color, rowNumber){
+	let table = document.getElementById('table');
+	for(let i=0; i<4; i++){
+		table.rows[rowNumber].cells[i].style.background = color;
+	}
 }
